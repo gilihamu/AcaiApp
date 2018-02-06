@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Açai App</string>
+    <string name="slogan">No Matter Where You are : whether you are at home,or in the office,or on the beach.
+    we will find you and we will feed You.</string>
+    <string name="title_activity_home">Início</string>
+
+    <string name="navigation_drawer_open">Abrir menu</string>
+    <string name="navigation_drawer_close">Fechar</string>
+
+    <string name="action_settings">Configruações</string>
+
+    <string name="sign_up">SIGN UP</string>
+    <string name="sign_in">SIGN IN</string>
+
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+
+    <string name="forgot_pwd"><u>Forgot Password?</u></string>
+
+    <string name="facebook_app_id">231384200733814</string>
+    <string name="facebook_login_protocol_name">fb231384200733814</string>
+    <string name="account_kit_client_token">76425f492ab8e4e155a98dac1a83990c</string>
+</resources>
