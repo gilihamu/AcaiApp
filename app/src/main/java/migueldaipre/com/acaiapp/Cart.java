@@ -181,7 +181,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                 if (cart.size() > 0)
                     showAlertDialog();
                 else
-                    Toast.makeText(Cart.this, "Your Cart is Empty!!!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Cart.this, "Seu carrinho está vazio.", Toast.LENGTH_SHORT).show();
             }
         });
             loadListFood();
@@ -216,7 +216,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                 GooglePlayServicesUtil.getErrorDialog(resultCode,this,PLAY_SERVICES_REQUEST).show();
             }
             else    {
-                Toast.makeText(this, "This Device is not Supported!!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Este dispositivo não é suportado.", Toast.LENGTH_SHORT).show();
                 finish();
             }
             return false;
@@ -226,8 +226,8 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
     private void showAlertDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
-        alertDialog.setTitle("One More Step..");
-        alertDialog.setMessage("Enter Your Address : ");
+        alertDialog.setTitle("Mais uma Etapa...");
+        alertDialog.setMessage("Digite Seu Endereço : ");
 
         final LayoutInflater inflater = this.getLayoutInflater();
         View order_address_comment = inflater.inflate(R.layout.order_address_comment,null);
@@ -240,7 +240,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         edtAddress.getView().findViewById(R.id.place_autocomplete_search_button).setVisibility(View.GONE);
 
         //set hint for autocomplete text
-        ((EditText)edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Enter Your Address");
+        ((EditText)edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setHint("Digite seu endereço");
 
         //set text size
         ((EditText)edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(14);
@@ -312,7 +312,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                         ((EditText)edtAddress.getView().findViewById(R.id.place_autocomplete_search_input)).setText(address);
                     }
                     else    {
-                        Toast.makeText(Cart.this, "Please Update Your Home Address!!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Cart.this, "Por favor atualizar o Endereço Residencial.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -321,7 +321,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         alertDialog.setView(order_address_comment);
         alertDialog.setIcon(R.drawable.ic_shopping_cart_black_24dp);
 
-        alertDialog.setPositiveButton("PAY NOW", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
@@ -336,7 +336,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                         address = shippingAddress.getAddress().toString();
                     }
                     else    {
-                        Toast.makeText(Cart.this, "Please Enter Address Or Select Option Address!!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Cart.this, "Insira seu endereço ou selecione uma opção.", Toast.LENGTH_LONG).show();
 
                         //fix crash fragment
                         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment)).commit();
@@ -345,9 +345,9 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                     }
                 }
 
-                if (!TextUtils.isEmpty(address)) {
+                if (TextUtils.isEmpty(address)) {
 
-                    Toast.makeText(Cart.this, "Order Placed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Cart.this, "Endereço não preenchido.", Toast.LENGTH_SHORT).show();
                     //fix crash fragment
                     getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment)).commit();
 
@@ -357,8 +357,9 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                     comment = edtComment.getText().toString();
 
                     String formatAmount = txtTotalPrice.getText().toString()
-                            .replace("$", "")
-                            .replace(",", "");
+                        .replace("R$", "")
+                        .replace(".","")
+                        .replace(",",".");
 
 
                     PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
@@ -375,7 +376,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
             }
         });
-        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 dialogInterface.dismiss();
@@ -440,7 +441,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
                         sendNotificationOrder(order_number);
 
-                Toast.makeText(Cart.this, "Thank you! Order Placed...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Cart.this, "Muito obrigado, pedido enviado.", Toast.LENGTH_SHORT).show();
                 finish();
 
                     } catch (JSONException e) {
@@ -449,10 +450,10 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                 }
             }
             else if (resultCode == Activity.RESULT_CANCELED)    {
-                Toast.makeText(this, "Payment Declined..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Pagamento recusado.", Toast.LENGTH_SHORT).show();
             }
             else if (requestCode == PaymentActivity.RESULT_EXTRAS_INVALID)  {
-                Toast.makeText(this, "Invalid Payment", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Pagamento inválido", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -466,30 +467,30 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren())    {
 
-                    Token serverToken = postSnapShot.getValue(Token.class);
+                    Token isServerToken = postSnapShot.getValue(Token.class);
 
                     //create raw payload
                     Notification notification = new Notification("KK","You Have New Order "+order_number);
-                    Sender content = new Sender(serverToken.getToken(),notification);
+                    Sender content = new Sender(isServerToken.getToken(),notification);
 
-                    mService.sendNotification(content).enqueue(new Callback<MyResponse>() {
+                    mService.sendNotification(content)
+                            .enqueue(new Callback<MyResponse>() {
                                 @Override
                                 public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
 
-                                    //only run when when get result
-
-                                        if (response.body().success == 1) {
-                                            Toast.makeText(Cart.this, "Thank you! Order Placed...", Toast.LENGTH_SHORT).show();
+                                    if(response.code() == 200){
+                                        if (response.body().success == 1){
+                                            Toast.makeText(Cart.this, "Muito Obrigado, Pedido feito.", Toast.LENGTH_SHORT).show();
                                             finish();
+                                        }else {
+                                            Toast.makeText(Cart.this, "Falhou...", Toast.LENGTH_SHORT).show();
                                         }
-                                        else {
-                                            Toast.makeText(Cart.this, "Failed...!!!!!!!", Toast.LENGTH_SHORT).show();
-                                        }
+                                    }
                                 }
 
                                 @Override
                                 public void onFailure(Call<MyResponse> call, Throwable t) {
-                                    Log.e("ERROR",t.getMessage());
+                                    Log.e("ERROR", t.getMessage());
                                 }
                             });
                 }
@@ -512,7 +513,6 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         //calculate total price
         int total = 0;
         for (Order order : cart)    {
-            //total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
             total += ((Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity())))
                     - ((Integer.parseInt(order.getDiscount())) * (Integer.parseInt(order.getQuantity())));
 
