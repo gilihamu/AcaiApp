@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         if (AccountKit.getCurrentAccessToken() != null) {
             final AlertDialog waitingDialog = new SpotsDialog(this);
             waitingDialog.show();
-            waitingDialog.setMessage("Please Wait....");
+            waitingDialog.setMessage("Aguarde...");
             waitingDialog.setCancelable(false);
 
             AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void printKeyHash() {
         try {
-            PackageInfo info = getPackageManager().getPackageInfo("com.techbytecare.kk.androideatclient",
+            PackageInfo info = getPackageManager().getPackageInfo("migueldaipre.com.acaiapp",
                     PackageManager.GET_SIGNATURES);
 
             for (Signature signature : info.signatures) {
@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
 
             //add progressBar
             final ProgressDialog mDialog = new ProgressDialog(MainActivity.this);
-            mDialog.setTitle("USER LOG-IN");
-            mDialog.setMessage("Please wait! while we check your credential!!");
+            mDialog.setTitle("ENTRANDO");
+            mDialog.setMessage("Por favor aguarde, estamos verificando suas credenciais.");
             mDialog.setCanceledOnTouchOutside(false);
             mDialog.show();
 
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (user.getPassword().equals(pwd)) {
                                     mDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Welcome! Sign In Successful!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Bem vindo, logado com sucesso.", Toast.LENGTH_SHORT).show();
 
                                     Intent homeIntent = new Intent(MainActivity.this, Home.class);
                                     Common.currentUser = user;
@@ -232,12 +232,12 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 else {
                                     mDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Wrong Password!!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Senha incorreta.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                             else {
                                 mDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Not Registered Yet! Kindly Register", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Usuário não registrado.", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         else    {
-            Toast.makeText(MainActivity.this, "Please Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Por favor verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
             return;
         }
     }
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             else if (result.wasCancelled()) {
-                Toast.makeText(this, "Canceled!!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Cancelado!", Toast.LENGTH_SHORT).show();
                 return;
             }
             else    {
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
 
                     final AlertDialog waitingDialog = new SpotsDialog(this);
                     waitingDialog.show();
-                    waitingDialog.setMessage("Please Wait....");
+                    waitingDialog.setMessage("Aguarde...");
                     waitingDialog.setCancelable(false);
 
                     //get current phone
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful())    {
-                                                            Toast.makeText(MainActivity.this, "Welcome...", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(MainActivity.this, "Bem Vindo...", Toast.LENGTH_SHORT).show();
                                                         }
 
                                                         //login
