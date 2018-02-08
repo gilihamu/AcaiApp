@@ -49,10 +49,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 7171;
-    ImageButton btnContinue;
     TextView txtSlogan;
 
-    Button btnSignIn,btnSignUp;
+    ImageButton btnConnect;
 
     FirebaseDatabase database;
     DatabaseReference users;
@@ -78,39 +77,20 @@ public class MainActivity extends AppCompatActivity {
 
         printKeyHash();
 
-        btnSignIn = (Button)findViewById(R.id.btnSignIn);
-        btnSignUp = (Button)findViewById(R.id.btnSignUp);
-
-        btnContinue = (ImageButton)findViewById(R.id.btn_continue);
+        btnConnect = (ImageButton)findViewById(R.id.btnConnect);
 
         txtSlogan = (TextView)findViewById(R.id.txtSlogan);
 
-        Paper.init(this);
 
         Typeface face = Typeface.createFromAsset(getAssets(),"fonts/NABILA.TTF");
         txtSlogan.setTextSize(22);
         txtSlogan.setTypeface(face);
 
-        btnContinue.setOnClickListener(new View.OnClickListener() {
+
+        btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 startLoginSystem();
-            }
-        });
-
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,SignUp.class);
-                startActivity(intent);
-            }
-        });
-
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,SignIn.class);
-                startActivity(intent);
             }
         });
 
@@ -152,14 +132,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        //check remember
-        String user = Paper.book().read(Common.USER_KEY);
-        String pwd = Paper.book().read(Common.PWD_KEY);
-
-        if (user != null && pwd != null)    {
-            if (!user.isEmpty() && !pwd.isEmpty())
-                login(user,pwd);
-        }
     }
 
     private void startLoginSystem() {
@@ -170,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,configurationBuilder.build());
         startActivityForResult(intent,REQUEST_CODE);
     }
-
 
     private void printKeyHash() {
         try {
@@ -190,82 +161,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void login(final String phone, final String pwd) {
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_user = database.getReference("User");
-
-        if (Common.isConnectedToInternet(getBaseContext())) {
-
-            //add progressBar
-            final ProgressDialog mDialog = new ProgressDialog(MainActivity.this);
-            mDialog.setTitle("ENTRANDO");
-            mDialog.setMessage("Por favor aguarde, estamos verificando suas credenciais.");
-            mDialog.setCanceledOnTouchOutside(false);
-            mDialog.show();
-
-            table_user.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    table_user.addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            //check if user doesn't exist in database
-                            if (dataSnapshot.child(phone).exists()){
-                                //get user information
-                                mDialog.dismiss();
-                                User user = dataSnapshot.child(phone).getValue(User.class);
-                                user.setPhone(phone);//set phone
-
-                                if (user.getPassword().equals(pwd)) {
-                                    mDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Bem vindo, logado com sucesso.", Toast.LENGTH_SHORT).show();
-
-                                    Intent homeIntent = new Intent(MainActivity.this, Home.class);
-                                    Common.currentUser = user;
-                                    startActivity(homeIntent);
-                                    finish();
-                                }
-                                else {
-                                    mDialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Senha incorreta.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else {
-                                mDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Usuário não registrado.", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-        else    {
-            Toast.makeText(MainActivity.this, "Por favor verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE)  {
+
+            Log.i("IF REQUESTCODE", ""+requestCode);
 
             AccountKitLoginResult result = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
 
@@ -278,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cancelado!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else    {
-                if (result.getAccessToken() != null)    {
+            else{
+                if (result.getAccessToken() != null){
 
                     final AlertDialog waitingDialog = new SpotsDialog(this);
                     waitingDialog.show();
@@ -302,28 +204,50 @@ public class MainActivity extends AppCompatActivity {
 
                                                 final User newUser = new User();
                                                 newUser.setPhone(userPhone);
-
                                                 newUser.setName("");
 
-                                                //add to firebase
-                                                users.child(userPhone).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful())    {
-                                                            Toast.makeText(MainActivity.this, "Bem Vindo...", Toast.LENGTH_SHORT).show();
-                                                        }
+                                                // Add to firebase
+                                                users.child(userPhone)
+                                                        .setValue(newUser)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if(task.isSuccessful()){
+                                                                    Toast.makeText(MainActivity.this, "Usuário registrado com sucesso. ", Toast.LENGTH_SHORT).show();
 
-                                                        //login
-                                                        users.child(userPhone).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    // Login
+                                                                    users.child(userPhone)
+                                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                                @Override
+                                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                                    User localUser = dataSnapshot.getValue(User.class);
+                                                                                    Intent homeIntent = new Intent(MainActivity.this, Home.class);
+                                                                                    Common.currentUser = localUser;
+                                                                                    startActivity(homeIntent);
+                                                                                    waitingDialog.dismiss();
+                                                                                    finish();
+                                                                                }
+
+                                                                                @Override
+                                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                                }
+                                                                            });
+                                                                }
+                                                            }
+                                                        });
+                                            }else{   //if exists
+
+                                                //login
+                                                // Login
+                                                users.child(userPhone)
+                                                        .addListenerForSingleValueEvent(new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(DataSnapshot dataSnapshot) {
-
                                                                 User localUser = dataSnapshot.getValue(User.class);
-
                                                                 Intent homeIntent = new Intent(MainActivity.this, Home.class);
                                                                 Common.currentUser = localUser;
                                                                 startActivity(homeIntent);
-                                                                //dismiss dialog
                                                                 waitingDialog.dismiss();
                                                                 finish();
                                                             }
@@ -333,31 +257,6 @@ public class MainActivity extends AppCompatActivity {
 
                                                             }
                                                         });
-                                                    }
-                                                });
-                                            }
-                                            else    {   //if exists
-
-                                                //login
-                                                users.child(userPhone).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                                        User localUser = dataSnapshot.getValue(User.class);
-
-                                                        Intent homeIntent = new Intent(MainActivity.this, Home.class);
-                                                        Common.currentUser = localUser;
-                                                        startActivity(homeIntent);
-                                                        //dismiss dialog
-                                                        waitingDialog.dismiss();
-                                                        finish();
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-
-                                                    }
-                                                });
                                             }
                                         }
 
