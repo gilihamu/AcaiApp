@@ -159,7 +159,7 @@ public class FoodList extends AppCompatActivity {
                 }
                 //search
                 materialSearchBar = (MaterialSearchBar)findViewById(R.id.searchBar);
-                materialSearchBar.setHint("Enter the Food");
+                materialSearchBar.setHint("Procurar");
 
                 loadSuggest();
 
