@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/my_bg"
+    android:background="@drawable/gradient_login"
     tools:context="migueldaipre.com.acaiapp.MainActivity">
 
     <LinearLayout
@@ -31,75 +31,16 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_above="@+id/extraLogin"
-        android:orientation="horizontal"
-        android:layout_centerVertical="true"
-        android:weightSum="2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <info.hoang8f.widget.FButton
-            android:id="@+id/btnSignUp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SIGN UP"
-            android:textColor="@android:color/white"
-            android:layout_margin="8dp"
-            app:fButtonColor="@color/btnSignUp"
-            app:shadowColor="@android:color/black"
-            app:shadowEnabled="true"
-            app:shadowHeight="5dp"
-            app:cornerRadius="4dp" />
-
-        <info.hoang8f.widget.FButton
-            android:id="@+id/btnSignIn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SIGN IN"
-            android:textColor="@android:color/white"
-            android:layout_margin="8dp"
-            app:fButtonColor="@color/btnSignActive"
-            app:shadowColor="@android:color/black"
-            app:shadowEnabled="true"
-            app:shadowHeight="5dp"
-            app:cornerRadius="4dp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/extraLogin"
-        android:orientation="horizontal"
-        android:gravity="center"
+    <ImageButton
+        android:id="@+id/btnConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/facebookbutton"
+        android:textColor="@android:color/white"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/btn_continue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_circle"
-            android:padding="8dp"
-            android:src="@drawable/ic_phone"
-            android:tint="@android:color/white"
-            android:layout_margin="5dp"/>
-
-        <ImageButton
-            android:id="@+id/btn_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_circle"
-            android:padding="8dp"
-            android:src="@drawable/ic_google"
-            android:tint="@android:color/white"
-            android:layout_margin="5dp"/>
-
-    </LinearLayout>
-
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:elevation="10dp"
+        />
 
 </RelativeLayout>
