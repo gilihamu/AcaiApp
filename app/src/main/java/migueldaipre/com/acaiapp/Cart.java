@@ -95,11 +95,10 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
     CartAdapter adapter;
 
-    APIService mService;
-
     Place shippingAddress;
 
     IGoogleService mGoogleMapService;
+    APIService mService;
 
     //paypal payments
     static PayPalConfiguration config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
@@ -263,6 +262,8 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         //radio
         final RadioButton rdiShipToAddress = (RadioButton)order_address_comment.findViewById(R.id.rdiShipToAddress);
         final RadioButton rdiHomeAddress = (RadioButton)order_address_comment.findViewById(R.id.rdiHomeAddress);
+        final RadioButton rdiCOD = (RadioButton)order_address_comment.findViewById(R.id.rdiCOD);
+        final RadioButton rdiPaypal = (RadioButton)order_address_comment.findViewById(R.id.rdiPaypal);
 
         //on radio button selected
         rdiShipToAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -356,21 +357,56 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
                     comment = edtComment.getText().toString();
 
-                    String formatAmount = txtTotalPrice.getText().toString()
-                        .replace("R$", "")
-                        .replace(".","")
-                        .replace(",",".");
+                    // Check payment
+                    if(!rdiCOD.isChecked() && !rdiPaypal.isChecked()){
+                        Toast.makeText(Cart.this, "Por favor selecione um método de pagamento.", Toast.LENGTH_LONG).show();
+                        //fix crash fragment
+                        getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment)).commit();
+
+                        return;
+                    }else if(rdiPaypal.isChecked()) {
+
+                        String formatAmount = txtTotalPrice.getText().toString()
+                                .replace("R$", "")
+                                .replace(".", "")
+                                .replace(",", ".");
 
 
-                    PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
-                            "BRL",
-                            "Pedido Açai App",
-                            PayPalPayment.PAYMENT_INTENT_SALE);
+                        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(formatAmount),
+                                "BRL",
+                                "Pedido Açai App",
+                                PayPalPayment.PAYMENT_INTENT_SALE);
 
-                    Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
-                    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-                    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
-                    startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+                        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class);
+                        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+                        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
+                        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+                    }else if (rdiCOD.isChecked()){
+                        Request request = new Request(
+                                Common.currentUser.getPhone(),
+                                Common.currentUser.getName(),
+                                address,
+                                txtTotalPrice.getText().toString(),
+                                "0",    //status
+                                comment,
+                                "COD",
+                                "Unpaid",
+                                String.format("%s %s", mLastLocation.getLatitude(), mLastLocation.getLongitude()),
+                                cart);
+
+                        //submit to firebase
+                        String order_number = String.valueOf(System.currentTimeMillis());
+
+                        requests.child(order_number).setValue(request);
+
+                        //delete cart
+                        new DatabaseKK(getBaseContext()).cleanCart();
+
+                        sendNotificationOrder(order_number);
+
+                        Toast.makeText(Cart.this, "Muito obrigado, pedido enviado.", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
 
                     getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment)).commit();
 
@@ -427,6 +463,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                                 txtTotalPrice.getText().toString(),
                                 "0",    //status
                                 comment,
+                                "Paypal",
                                 jsonObject.getJSONObject("response").getString("state"),    //state from json
                                 String.format("%s %s",shippingAddress.getLatLng().latitude,shippingAddress.getLatLng().longitude),
                                 cart);
