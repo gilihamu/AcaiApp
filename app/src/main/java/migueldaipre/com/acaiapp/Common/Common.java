@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import migueldaipre.com.acaiapp.Model.User;
 import migueldaipre.com.acaiapp.Remote.APIService;
+import migueldaipre.com.acaiapp.Remote.FCMRetrofitClient;
 import migueldaipre.com.acaiapp.Remote.IGoogleService;
 import migueldaipre.com.acaiapp.Remote.RetrofitClient;
 
@@ -21,11 +22,11 @@ public class Common {
 
     public static final String INTENT_FOOD_ID = "FoodId";
 
-    public static APIService getFCMService()    {
-        return RetrofitClient.getClient(BASE_URL).create(APIService.class);
+    public static APIService getFCMService(){
+        return FCMRetrofitClient.getClient(BASE_URL).create(APIService.class);
     }
 
-    public static IGoogleService getGoogleMapAPI()    {
+    public static IGoogleService getGoogleMapAPI(){
         return RetrofitClient.getGoogleClient(GOOGLE_API_URL).create(IGoogleService.class);
     }
 
@@ -36,11 +37,11 @@ public class Common {
 
     public static String convertCodeToStatus(String status) {
         if (status.equals("0")){
-            return "Placed";
+            return "Pedido Feito";
         } else if(status.equals("1")) {
-            return "On My Way";
+            return "Em transporte";
         } else {
-            return "Shipped";
+            return "Entregue";
         }
     }
 
