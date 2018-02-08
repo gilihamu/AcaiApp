@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 import migueldaipre.com.acaiapp.Model.User;
 import migueldaipre.com.acaiapp.Remote.APIService;
-import migueldaipre.com.acaiapp.Remote.FCMRetrofitClient;
+import migueldaipre.com.acaiapp.Remote.GoogleRetrofitClient;
 import migueldaipre.com.acaiapp.Remote.IGoogleService;
 import migueldaipre.com.acaiapp.Remote.RetrofitClient;
 
@@ -23,11 +23,11 @@ public class Common {
     public static final String INTENT_FOOD_ID = "FoodId";
 
     public static APIService getFCMService(){
-        return FCMRetrofitClient.getClient(BASE_URL).create(APIService.class);
+        return RetrofitClient.getClient(BASE_URL).create(APIService.class);
     }
 
     public static IGoogleService getGoogleMapAPI(){
-        return RetrofitClient.getGoogleClient(GOOGLE_API_URL).create(IGoogleService.class);
+        return GoogleRetrofitClient.getGoogleClient(GOOGLE_API_URL).create(IGoogleService.class);
     }
 
     public static final String DELETE = "Delete";
