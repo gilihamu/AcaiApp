@@ -51,7 +51,7 @@ public class NotificationHelper extends ContextWrapper {
         return new Notification.Builder(getApplicationContext(),TBC_CHANNEL_ID).setContentIntent(contentIntent)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_coffee)
                 .setSound(soundUri)
                 .setAutoCancel(false);
     }
