@@ -30,6 +30,7 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.facebook.accountkit.AccountKit;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,7 +48,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
-import io.paperdb.Paper;
 import migueldaipre.com.acaiapp.Common.Common;
 import migueldaipre.com.acaiapp.Database.DatabaseKK;
 import migueldaipre.com.acaiapp.Interface.ItemClickListener;
@@ -95,8 +95,6 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
-
-        Paper.init(this);
 
         //view
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_layout);
@@ -168,8 +166,6 @@ public class Home extends AppCompatActivity
                 return new MenuViewHolder(itemView);
             }
         };
-
-        //Paper.init(this);
 
         fab = (CounterFab) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -363,11 +359,9 @@ public class Home extends AppCompatActivity
             showUpdateNameDialog();
         }
         else if (id == R.id.nav_log_out) {
-            //delete remember user and password
-            Paper.book().destroy();
-
-
             //logout
+            AccountKit.logOut();
+            // Intent signIn
             Intent signOutIntent = new Intent(Home.this,MainActivity.class);
             signOutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(signOutIntent);
