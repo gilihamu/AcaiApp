@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/restaurant_font.otf")
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Roboto/Roboto-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath).build());
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -167,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE)  {
 
-            Log.i("IF REQUESTCODE", ""+requestCode);
-
             AccountKitLoginResult result = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
 
             if (result.getError() != null)  {
@@ -205,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
                                                 final User newUser = new User();
                                                 newUser.setPhone(userPhone);
                                                 newUser.setName("");
+                                                newUser.setBalance(0.0);
 
                                                 // Add to firebase
                                                 users.child(userPhone)
