@@ -19,12 +19,13 @@
             android:id="@+id/imageView"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/logo_eat_it" />
+            android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/txtSlogan"
             android:gravity="center"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
+            android:textSize="18sp"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:text="@string/slogan"/>
