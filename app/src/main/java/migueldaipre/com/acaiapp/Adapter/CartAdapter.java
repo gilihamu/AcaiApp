@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 
 import migueldaipre.com.acaiapp.Cart;
+import migueldaipre.com.acaiapp.Common.Common;
 import migueldaipre.com.acaiapp.Database.DatabaseKK;
 import migueldaipre.com.acaiapp.Model.Order;
 import migueldaipre.com.acaiapp.R;
@@ -58,7 +59,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
 
                 //calculate total price
                 int total = 0;
-                List<Order> orders = new DatabaseKK(cart).getCarts();
+                List<Order> orders = new DatabaseKK(cart).getCarts(Common.currentUser.getPhone());
 
                 for (Order item : orders)    {
                     //total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(item.getQuantity()));
@@ -87,5 +88,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartViewHolder> {
     @Override
     public int getItemCount() {
         return listData.size();
+    }
+
+    public Order getItem(int position){
+        return listData.get(position);
+    }
+
+    public void removeItem(int position){
+        listData.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Order item, int position){
+        listData.add(position,item);
+        notifyItemInserted(position);
     }
 }
