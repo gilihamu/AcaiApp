@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">Açai App</string>
-    <string name="slogan">No Matter Where You are : whether you are at home,or in the office,or on the beach.
-    we will find you and we will feed You.</string>
+    <string name="app_name">AcaiDelivery</string>
+    <string name="slogan">Aplicativo do Ponto de Açai, faça pedidos e receba em casa.</string>
     <string name="title_activity_home">Início</string>
 
     <string name="navigation_drawer_open">Abrir menu</string>
@@ -18,7 +17,7 @@
 
     <string name="forgot_pwd"><u>Forgot Password?</u></string>
 
-    <string name="facebook_app_id">231384200733814</string>
-    <string name="facebook_login_protocol_name">fb231384200733814</string>
-    <string name="account_kit_client_token">76425f492ab8e4e155a98dac1a83990c</string>
+    <string name="facebook_app_id">1754095584683026</string>
+    <string name="facebook_login_protocol_name">fb1754095584683026</string>
+    <string name="account_kit_client_token">e8322f11f8e1ea06fcf133020f6a377e</string>
 </resources>

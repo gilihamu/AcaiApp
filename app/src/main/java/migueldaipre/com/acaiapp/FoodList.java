@@ -39,6 +39,7 @@ import java.util.List;
 import migueldaipre.com.acaiapp.Common.Common;
 import migueldaipre.com.acaiapp.Database.DatabaseKK;
 import migueldaipre.com.acaiapp.Interface.ItemClickListener;
+import migueldaipre.com.acaiapp.Model.Favorites;
 import migueldaipre.com.acaiapp.Model.Food;
 import migueldaipre.com.acaiapp.Model.Order;
 import migueldaipre.com.acaiapp.ViewHolder.FoodViewHolder;
@@ -298,24 +299,31 @@ public class FoodList extends AppCompatActivity {
 
                 Picasso.with(getBaseContext()).load(model.getImage()).into(viewHolder.food_image);
 
-                //quick cart
-                viewHolder.quick_cart.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new DatabaseKK(getBaseContext()).addToCart(new Order(
-                                adapter.getRef(position).getKey(),
-                                model.getName(),
-                                "1",
-                                model.getPrice(),
-                                model.getDiscount(),
-                                model.getImage()));
 
-                        Toast.makeText(FoodList.this, "Added To Cart", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                //quick cart
+                    viewHolder.quick_cart.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            boolean isExists = new DatabaseKK(getBaseContext()).checkFoodExists(adapter.getRef(position).getKey(),Common.currentUser.getPhone());
+                            if(!isExists) {
+                                new DatabaseKK(getBaseContext()).addToCart(new Order(
+                                        Common.currentUser.getPhone(),
+                                        adapter.getRef(position).getKey(),
+                                        model.getName(),
+                                        "1",
+                                        model.getPrice(),
+                                        model.getDiscount(),
+                                        model.getImage()));
+
+                            }else {
+                                new DatabaseKK(getBaseContext()).increaseCart(Common.currentUser.getPhone(),adapter.getRef(position).getKey());
+                            }
+                            Toast.makeText(FoodList.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
                 //add favourites
-                if (localDB.isFavourites(adapter.getRef(position).getKey()))    {
+                if (localDB.isFavourites(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))    {
                     viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
                 }
 
@@ -332,13 +340,23 @@ public class FoodList extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        if (!localDB.isFavourites(adapter.getRef(position).getKey()))   {
-                            localDB.addToFavourites(adapter.getRef(position).getKey());
+                        Favorites favorites = new Favorites();
+                        favorites.setFoodId(adapter.getRef(position).getKey());
+                        favorites.setFoodName(model.getName());
+                        favorites.setFoodPrice(model.getPrice());
+                        favorites.setFoodDescription(model.getDescription());
+                        favorites.setFoodDiscount(model.getDiscount());
+                        favorites.setFoodImage(model.getImage());
+                        favorites.setFoodMenuId(model.getMenuId());
+                        favorites.setUserPhone(Common.currentUser.getPhone());
+
+                        if (!localDB.isFavourites(adapter.getRef(position).getKey(), Common.currentUser.getPhone()))   {
+                            localDB.addToFavourites(favorites);
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_black_24dp);
                             Toast.makeText(FoodList.this, ""+model.getName()+" was added to Favourites", Toast.LENGTH_SHORT).show();
                         }
                         else    {
-                            localDB.removeFromFavourites(adapter.getRef(position).getKey());
+                            localDB.removeFromFavourites(adapter.getRef(position).getKey(), Common.currentUser.getPhone());
                             viewHolder.fav_image.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                             Toast.makeText(FoodList.this, ""+model.getName()+" was Removed From Favourites", Toast.LENGTH_SHORT).show();
                         }

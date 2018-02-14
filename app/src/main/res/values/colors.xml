@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#004d40</color>
-    <color name="colorPrimaryDark">#00251a</color>
-    <color name="colorAccent">#39796b</color>
+    <color name="colorPrimary">#61365f</color>
+    <color name="colorPrimaryDark">#490845</color>
+    <color name="colorAccent">#bed63c</color>
 
     <color name="btnSignUp">#39796b</color>
     <color name="btnSignActive">#A9d440</color>
@@ -12,4 +12,6 @@
 
     <color name="overlayBackgroundMenu">#7f004487</color>
     <color name="overlayBackgroundFood">#7f008716</color>
+
+    <color name="bgRowBackground">#Fa315b</color>
 </resources>
