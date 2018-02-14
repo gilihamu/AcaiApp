@@ -6,29 +6,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +36,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,30 +55,23 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import info.hoang8f.widget.FButton;
 import migueldaipre.com.acaiapp.Adapter.CartAdapter;
 import migueldaipre.com.acaiapp.Common.Common;
 import migueldaipre.com.acaiapp.Common.Config;
 import migueldaipre.com.acaiapp.Database.DatabaseKK;
-import migueldaipre.com.acaiapp.Helper.RecyclerItemTouchHelper;
-import migueldaipre.com.acaiapp.Interface.RecyclerItemTouchHelperListener;
 import migueldaipre.com.acaiapp.Model.MyResponse;
 import migueldaipre.com.acaiapp.Model.Notification;
 import migueldaipre.com.acaiapp.Model.Order;
 import migueldaipre.com.acaiapp.Model.Request;
 import migueldaipre.com.acaiapp.Model.Sender;
 import migueldaipre.com.acaiapp.Model.Token;
-import migueldaipre.com.acaiapp.Model.User;
 import migueldaipre.com.acaiapp.Remote.APIService;
 import migueldaipre.com.acaiapp.Remote.IGoogleService;
-import migueldaipre.com.acaiapp.ViewHolder.CartViewHolder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,7 +79,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Cart extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,LocationListener, RecyclerItemTouchHelperListener {
+        GoogleApiClient.OnConnectionFailedListener,LocationListener{
 
     private static final int PAYPAL_REQUEST_CODE = 9999;
     RecyclerView recyclerView;
@@ -103,8 +88,8 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
     FirebaseDatabase database;
     DatabaseReference requests;
 
-    public Button txtTotalPrice;
-    Button btnPlace;
+    public TextView txtTotalPrice;
+    FButton btnPlace;
 
     List<Order> cart = new ArrayList<>();
 
@@ -114,8 +99,6 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
     IGoogleService mGoogleMapService;
     APIService mService;
-
-    RelativeLayout rootLayout;
 
     //paypal payments
     static PayPalConfiguration config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
@@ -144,14 +127,12 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CalligraphyConfig .initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Roboto/Roboto-Regular.otf")
+        CalligraphyConfig .initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/restaurant_font.otf")
                                         .setFontAttrId(R.attr.fontPath).build());
 
         setContentView(R.layout.activity_cart);
 
         mGoogleMapService = Common.getGoogleMapAPI();
-
-        rootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
 
         //runtime permission 4 location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -190,12 +171,8 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        //Swipe to delete
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT,this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
-        txtTotalPrice = (Button) findViewById(R.id.total);
-        btnPlace = (Button) findViewById(R.id.btnPlaceOrder);
+        txtTotalPrice = (TextView)findViewById(R.id.total);
+        btnPlace = (FButton)findViewById(R.id.btnPlaceOrder);
 
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,7 +264,6 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         final RadioButton rdiHomeAddress = (RadioButton)order_address_comment.findViewById(R.id.rdiHomeAddress);
         final RadioButton rdiCOD = (RadioButton)order_address_comment.findViewById(R.id.rdiCOD);
         final RadioButton rdiPaypal = (RadioButton)order_address_comment.findViewById(R.id.rdiPaypal);
-        final RadioButton rdiBalance = (RadioButton)order_address_comment.findViewById(R.id.rdiBalance);
 
         //on radio button selected
         rdiShipToAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -382,7 +358,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                     comment = edtComment.getText().toString();
 
                     // Check payment
-                    if(!rdiCOD.isChecked() && !rdiPaypal.isChecked() && !rdiBalance.isChecked()){ // If both COD, Paypal and Balance is not checked
+                    if(!rdiCOD.isChecked() && !rdiPaypal.isChecked()){
                         Toast.makeText(Cart.this, "Por favor selecione um método de pagamento.", Toast.LENGTH_LONG).show();
                         //fix crash fragment
                         getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment)).commit();
@@ -424,81 +400,12 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                         requests.child(order_number).setValue(request);
 
                         //delete cart
-                        new DatabaseKK(getBaseContext()).cleanCart(Common.currentUser.getPhone());
+                        new DatabaseKK(getBaseContext()).cleanCart();
 
                         sendNotificationOrder(order_number);
 
                         Toast.makeText(Cart.this, "Muito obrigado, pedido enviado.", Toast.LENGTH_LONG).show();
                         finish();
-                    }else if(rdiBalance.isChecked()){
-                        double amount = 0;
-                        // First, get total price from txtTotalPrice
-                        try {
-                            amount = Common.formatCurrency(txtTotalPrice.getText().toString(), Locale.US).doubleValue();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-                        //after receive total price of this order, just compare with user balance
-                        if(Common.currentUser.getBalance() >= amount){
-                            // if balance >= amount
-                            Request request = new Request(
-                                    Common.currentUser.getPhone(),
-                                    Common.currentUser.getName(),
-                                    address,
-                                    txtTotalPrice.getText().toString(),
-                                    "0",    //status
-                                    comment,
-                                    "Balance",
-                                    "Paid",
-                                    String.format("%s %s", mLastLocation.getLatitude(), mLastLocation.getLongitude()),
-                                    cart);
-
-                            //submit to firebase
-                            final String order_number = String.valueOf(System.currentTimeMillis());
-
-                            requests.child(order_number).setValue(request);
-
-                            //delete cart
-                            new DatabaseKK(getBaseContext()).cleanCart(Common.currentUser.getPhone());
-
-                            // Update Balance
-                            double balance = Common.currentUser.getBalance() - amount;
-                            Map<String, Object> update_balance = new HashMap<>();
-                            update_balance.put("balance",balance);
-
-                            FirebaseDatabase.getInstance()
-                                    .getReference("User")
-                                    .child(Common.currentUser.getPhone())
-                                    .updateChildren(update_balance)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                //Refresh user
-                                                FirebaseDatabase.getInstance()
-                                                        .getReference("User")
-                                                        .child(Common.currentUser.getPhone())
-                                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                Common.currentUser = dataSnapshot.getValue(User.class);
-                                                                sendNotificationOrder(order_number);
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(DatabaseError databaseError) {
-
-                                                            }
-                                                        });
-                                            }
-                                        }
-                                    });
-
-                        }else {
-                            Toast.makeText(Cart.this, "Seu saldo é insuficiente.", Toast.LENGTH_SHORT).show();
-                        }
-
                     }
 
                     getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment)).commit();
@@ -567,7 +474,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                         requests.child(order_number).setValue(request);
 
                         //delete cart
-                        new DatabaseKK(getBaseContext()).cleanCart(Common.currentUser.getPhone());
+                        new DatabaseKK(getBaseContext()).cleanCart();
 
                         sendNotificationOrder(order_number);
 
@@ -635,7 +542,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
 
     private void loadListFood() {
 
-        cart = new DatabaseKK(Cart.this).getCarts(Common.currentUser.getPhone());
+        cart = new DatabaseKK(Cart.this).getCarts();
         adapter = new CartAdapter(cart,this);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
@@ -666,7 +573,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
         //we will remove item by position
         cart.remove(position);
         //after that we will delete all data from sqlLite
-        new DatabaseKK(this).cleanCart(Common.currentUser.getPhone());
+        new DatabaseKK(this).cleanCart();
         //now we will update new data
 
         for (Order item : cart)
@@ -722,67 +629,5 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         displayLocation();
-    }
-
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(viewHolder instanceof CartViewHolder){
-            String name = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition()).getProductName();
-
-            final Order deleteItem = ((CartAdapter)recyclerView.getAdapter()).getItem(viewHolder.getAdapterPosition());
-            final int deleteIndex = viewHolder.getAdapterPosition();
-
-            adapter.removeItem(deleteIndex);
-            new DatabaseKK(getBaseContext()).removeFromCart(deleteItem.getProductId(),Common.currentUser.getPhone());
-
-            //Update Total
-            //calculate total price
-            int total = 0;
-            List<Order> orders = new DatabaseKK(getBaseContext()).getCarts(Common.currentUser.getPhone());
-
-            for (Order item : orders)    {
-                //total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(item.getQuantity()));
-
-                total += ((Integer.parseInt(item.getPrice())) * (Integer.parseInt(item.getQuantity())))
-                        - ((Integer.parseInt(item.getDiscount())) * (Integer.parseInt(item.getQuantity())));
-
-
-                Locale locale = new Locale("en","US");
-                NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-
-                txtTotalPrice.setText(fmt.format(total));
-            }
-
-            //Make Snackbar
-            Snackbar snackbar = Snackbar.make(rootLayout,name+" removido do carrinho.",Snackbar.LENGTH_LONG);
-            snackbar.setAction("Desfazer", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    adapter.restoreItem(deleteItem,deleteIndex);
-                    new DatabaseKK(getBaseContext()).addToCart(deleteItem);
-
-                    //Update Total
-                    //calculate total price
-                    int total = 0;
-                    List<Order> orders = new DatabaseKK(getBaseContext()).getCarts(Common.currentUser.getPhone());
-
-                    for (Order item : orders)    {
-                        //total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(item.getQuantity()));
-
-                        total += ((Integer.parseInt(item.getPrice())) * (Integer.parseInt(item.getQuantity())))
-                                - ((Integer.parseInt(item.getDiscount())) * (Integer.parseInt(item.getQuantity())));
-
-
-                        Locale locale = new Locale("en","US");
-                        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
-
-                        txtTotalPrice.setText(fmt.format(total));
-                    }
-                }
-            });
-            snackbar.setActionTextColor(Color.YELLOW);
-            snackbar.show();
-
-        }
     }
 }

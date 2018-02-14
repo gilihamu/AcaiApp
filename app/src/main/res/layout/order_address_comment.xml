@@ -33,56 +33,19 @@
                 app:met_primaryColor="@color/colorPrimary"
                 app:met_singleLineEllipsis="true"/>
 
-            <TextView
-                android:padding="5dp"
-                android:text="Método de Entrega: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/rdiShipToAddress"
-                    android:text="MINHA LOCALIZAÇÃO"
+                    android:text="SHIP TO THIS ADDRESS"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <RadioButton
                     android:id="@+id/rdiHomeAddress"
-                    android:text="ENDEREÇO RESIDENCIAL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-            </RadioGroup>
-
-            <TextView
-                android:padding="5dp"
-                android:text="Método de Pagamento: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <RadioButton
-                    android:id="@+id/rdiCOD"
-                    android:text="PAGAR NA ENTREGA"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <RadioButton
-                    android:id="@+id/rdiPaypal"
-                    android:text="PAYPAL / CARTÃO DE CRÉDITO"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <RadioButton
-                    android:id="@+id/rdiBalance"
-                    android:text="MEU SALDO"
+                    android:text="HOME ADDRESS"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

@@ -63,7 +63,7 @@ public class OrderStatus extends AppCompatActivity {
         if (getIntent() == null) {
             loadOrders(Common.currentUser.getPhone());
         }
-        else{
+        else    {
             loadOrders(getIntent().getStringExtra("userPhone"));
         }
     }

@@ -6,45 +6,32 @@
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Categorias"/>
+            android:title="Menu"/>
         <item
             android:id="@+id/nav_home_address"
             android:icon="@drawable/ic_menu_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Endereço Residencial"/>
-
-        <item
-            android:id="@+id/nav_favorites"
-            android:icon="@drawable/ic_favorite_black_24dp"
-            android:iconTint="@android:color/white"
-            android:title="Favoritos"/>
-
+            android:title="Home Address"/>
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Carrinho"/>
+            android:title="My Cart"/>
         <item
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_access_time_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Meus Pedidos"/>
+            android:title="Orders Status"/>
         <item
             android:id="@+id/nav_update_name"
             android:icon="@drawable/ic_person_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Atualizar Nome"/>
-
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:iconTint="@android:color/white"
-            android:title="Configurações"/>
+            android:title="Update Name"/>
         <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
             android:iconTint="@android:color/white"
-            android:title="Sair"/>
+            android:title="Sign Out"/>
 
     </group>
 

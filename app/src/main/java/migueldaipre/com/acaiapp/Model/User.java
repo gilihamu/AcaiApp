@@ -8,7 +8,6 @@ public class User {
     private String IsStaff;
     private String secureCode;
     private String homeAddress;
-    private double balance;
 
     public User() {
     }
@@ -67,8 +66,4 @@ public class User {
     public void setHomeAddress(String homeAddress) {
         this.homeAddress = homeAddress;
     }
-
-    public double getBalance() { return balance; }
-
-    public void setBalance(double balance) { this.balance = balance; }
 }

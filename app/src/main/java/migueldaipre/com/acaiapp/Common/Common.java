@@ -3,12 +3,6 @@ package migueldaipre.com.acaiapp.Common;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.ParseException;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import migueldaipre.com.acaiapp.Model.User;
 import migueldaipre.com.acaiapp.Remote.APIService;
@@ -17,8 +11,6 @@ import migueldaipre.com.acaiapp.Remote.IGoogleService;
 import migueldaipre.com.acaiapp.Remote.RetrofitClient;
 
 public class Common {
-
-    public static String topicName = "Novidades";
 
     public static User currentUser;
 
@@ -72,16 +64,6 @@ public class Common {
             }
         }
         return false;
-    }
-
-    public static BigDecimal formatCurrency(String amount, Locale locale) throws ParseException, java.text.ParseException {
-        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
-        if(format instanceof DecimalFormat){
-            ((DecimalFormat)format).setParseBigDecimal(true);
-        }
-        return (BigDecimal)format.parse(amount.replace("[^\\d.,]", ""));
-
-
     }
 
 }
