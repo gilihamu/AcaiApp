@@ -98,7 +98,7 @@ public class Home extends AppCompatActivity
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu");
+        toolbar.setTitle("Categorias");
         setSupportActionBar(toolbar);
 
         //view
@@ -113,7 +113,7 @@ public class Home extends AppCompatActivity
                     loadMenu();
                 }
                 else {
-                    Toast.makeText(getBaseContext(), "Please Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -127,7 +127,7 @@ public class Home extends AppCompatActivity
                     loadMenu();
                 }
                 else {
-                    Toast.makeText(getBaseContext(), "Please Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -302,8 +302,6 @@ public class Home extends AppCompatActivity
         recycler_menu.scheduleLayoutAnimation();
     }
 
-
-
     @Override
     protected void onStop() {
         super.onStop();
@@ -417,8 +415,8 @@ public class Home extends AppCompatActivity
     }
     private void showHomeAddressDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
-        alertDialog.setTitle("Change Home Address");
-        alertDialog.setMessage("Please Fill all information..");
+        alertDialog.setTitle("Alterar Endereço");
+        alertDialog.setMessage("Preencha todas as informações.");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout_home = inflater.inflate(R.layout.home_address_layout,null);
@@ -427,7 +425,7 @@ public class Home extends AppCompatActivity
 
         alertDialog.setView(layout_home);
 
-        alertDialog.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("ATUALIZAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 dialogInterface.dismiss();
@@ -439,7 +437,7 @@ public class Home extends AppCompatActivity
                         .setValue(Common.currentUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(Home.this, "Home Address Updated Successfully!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Home.this, "Endereço Residencial atualizado com sucesso.", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -449,8 +447,8 @@ public class Home extends AppCompatActivity
 
     private void showUpdateNameDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Home.this);
-        alertDialog.setTitle("UPDATE NAME");
-        alertDialog.setMessage("Please Fill all information..");
+        alertDialog.setTitle("Atualizar Nome");
+        alertDialog.setMessage("Preencha todas as informações.");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View layout_update_name = inflater.inflate(R.layout.update_name_layout,null);
@@ -459,7 +457,7 @@ public class Home extends AppCompatActivity
 
         alertDialog.setView(layout_update_name);
         //Button
-        alertDialog.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("ATUALIZAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 //change password here
@@ -481,13 +479,13 @@ public class Home extends AppCompatActivity
                                 waitingDialog.dismiss();
                                 if (task.isSuccessful())    {
 
-                                    Toast.makeText(Home.this, "Name Was Updated!!!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Home.this, "Seu Nome foi Atualizado.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
             }
         });
-        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 dialogInterface.dismiss();
