@@ -144,7 +144,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CalligraphyConfig .initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Roboto/Roboto-Regular.otf")
+        CalligraphyConfig .initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/Lato/Lato-Reg.ttf")
                                         .setFontAttrId(R.attr.fontPath).build());
 
         setContentView(R.layout.activity_cart);
@@ -496,7 +496,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                                     });
 
                         }else {
-                            Toast.makeText(Cart.this, "Seu saldo é insuficiente.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Cart.this, "Seu saldo é insuficiente.", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -600,7 +600,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                     Token isServerToken = postSnapShot.getValue(Token.class);
 
                     //create raw payload
-                    Notification notification = new Notification("KK","You Have New Order "+order_number);
+                    Notification notification = new Notification("Açai Delivery","Você possui um novo pedido: "+order_number);
                     Sender content = new Sender(isServerToken.getToken(),notification);
 
                     mService.sendNotification(content)
@@ -747,7 +747,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                         - ((Integer.parseInt(item.getDiscount())) * (Integer.parseInt(item.getQuantity())));
 
 
-                Locale locale = new Locale("en","US");
+                Locale locale = new Locale("pt","BR");
                 NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
                 txtTotalPrice.setText(fmt.format(total));
@@ -773,7 +773,7 @@ public class Cart extends AppCompatActivity implements GoogleApiClient.Connectio
                                 - ((Integer.parseInt(item.getDiscount())) * (Integer.parseInt(item.getQuantity())));
 
 
-                        Locale locale = new Locale("en","US");
+                        Locale locale = new Locale("pt","BR");
                         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
                         txtTotalPrice.setText(fmt.format(total));
