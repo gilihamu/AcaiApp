@@ -8,8 +8,10 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,11 +46,14 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
     TextView food_name,food_price,food_description,food_discount_price;
     ImageView food_image;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton btnRating;
+    //FloatingActionButton btnRating;
     ElegantNumberButton numberButton;
     RatingBar ratingBar;
 
-    CounterFab btnCart;
+    //CounterFab btnCart;
+    FButton btnCarrinho;
+
+    RelativeLayout btnAvaliar;
 
     String foodId = "";
 
@@ -81,8 +86,10 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         btnShowComment = (FButton)findViewById(R.id.btnShowComment);
 
         numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
-        btnCart = (CounterFab) findViewById(R.id.btnCart);
-        btnRating = (FloatingActionButton)findViewById(R.id.btn_rating);
+        //btnCart = (CounterFab) findViewById(R.id.btnCart);
+        btnCarrinho = (FButton)findViewById(R.id.btnCarrinho);
+        btnAvaliar = (RelativeLayout)findViewById(R.id.btnAvaliar);
+        //btnRating = (FloatingActionButton)findViewById(R.id.btn_rating);
         ratingBar = (RatingBar)findViewById(R.id.ratingBar);
 
         btnShowComment.setOnClickListener(new View.OnClickListener() {
@@ -94,14 +101,14 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
             }
         });
 
-        btnRating.setOnClickListener(new View.OnClickListener() {
+        btnAvaliar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showRatingDialog();
             }
         });
 
-        btnCart.setOnClickListener(new View.OnClickListener() {
+        btnCarrinho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new DatabaseKK(getBaseContext()).addToCart(new Order(
@@ -113,17 +120,17 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                         currentFood.getDiscount(),
                         currentFood.getImage()));
 
-                Toast.makeText(FoodDetail.this, "Added To Cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetail.this, "Adicionado ao Carrinho.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnCart.setCount(new DatabaseKK(this).getCountCart(Common.currentUser.getPhone()));
+       // btnCart.setCount(new DatabaseKK(this).getCountCart(Common.currentUser.getPhone()));
 
         food_description = (TextView)findViewById(R.id.food_description);
         food_price = (TextView)findViewById(R.id.food_price);
         food_name = (TextView)findViewById(R.id.food_name);
         food_image = (ImageView)findViewById(R.id.img_food);
-        food_discount_price = (TextView)findViewById(R.id.food_discount_price);
+       // food_discount_price = (TextView)findViewById(R.id.food_discount_price);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing);
 
@@ -140,7 +147,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 getRatingFood(foodId);
             }
             else {
-                Toast.makeText(this, "Please Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Verifique sua conexão com a internet.", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -176,15 +183,15 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
 
     private void showRatingDialog() {
         new AppRatingDialog.Builder()
-                .setPositiveButtonText("Submit")
-                .setNegativeButtonText("Cancel")
-                .setNoteDescriptions(Arrays.asList("Very Bad","Not Good","Quite OK","Very Good","Awesome Taste"))
+                .setPositiveButtonText("Enviar")
+                .setNegativeButtonText("Cancelar")
+                .setNoteDescriptions(Arrays.asList("Muito Ruim","Ruim","Normal","Bom","Ótimo"))
                 .setDefaultRating(1)
-                .setTitle("Rate this Food")
-                .setDescription("Please Select Some Stars and Give Your FeedBack")
+                .setTitle("Avaliar")
+                .setDescription("Selecione algumas Estrelas e Dê seu FeedBack")
                 .setTitleTextColor(R.color.colorPrimary)
                 .setDescriptionTextColor(R.color.colorPrimary)
-                .setHint("Please Write Your FeedBack Here")
+                .setHint("Escreva o seu FeedBack Aqui")
                 .setHintTextColor(R.color.colorAccent)
                 .setCommentTextColor(android.R.color.white)
                 .setCommentBackgroundColor(R.color.colorPrimaryDark)
@@ -213,12 +220,12 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 food_name.setText(currentFood.getName());
                 food_description.setText(currentFood.getDescription());
 
-                if (!currentFood.getDiscount().equals("0"))   {
-                    food_discount_price.setText("Discount : $"+" "+currentFood.getDiscount());
+                /*if (!currentFood.getDiscount().equals("0"))   {
+                    food_discount_price.setText("Desconto : R$"+" "+currentFood.getDiscount());
                 }
                 else    {
                     food_discount_price.setVisibility(View.GONE);
-                }
+                }*/
             }
 
             @Override
@@ -266,7 +273,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 .setValue(rating).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(FoodDetail.this, "Thank You For Your FeedBack !!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FoodDetail.this, "Obrigado pelo seu feedback!", Toast.LENGTH_SHORT).show();
             }
         });
     }
