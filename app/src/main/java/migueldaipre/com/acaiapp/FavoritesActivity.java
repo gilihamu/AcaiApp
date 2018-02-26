@@ -1,21 +1,17 @@
 package migueldaipre.com.acaiapp;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Locale;
 
 import migueldaipre.com.acaiapp.Adapter.FavoritesAdapter;
 import migueldaipre.com.acaiapp.Common.Common;
@@ -23,8 +19,9 @@ import migueldaipre.com.acaiapp.Database.DatabaseKK;
 import migueldaipre.com.acaiapp.Helper.RecyclerItemTouchHelper;
 import migueldaipre.com.acaiapp.Interface.RecyclerItemTouchHelperListener;
 import migueldaipre.com.acaiapp.Model.Favorites;
-import migueldaipre.com.acaiapp.Model.Order;
 import migueldaipre.com.acaiapp.ViewHolder.FavoritesViewHolder;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class FavoritesActivity extends AppCompatActivity implements RecyclerItemTouchHelperListener {
 
@@ -34,10 +31,28 @@ public class FavoritesActivity extends AppCompatActivity implements RecyclerItem
     FavoritesAdapter adapter;
     RelativeLayout rootLayout;
 
+    Toolbar toolbar;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder().setDefaultFontPath("fonts/restaurant_font.otf")
+                .setFontAttrId(R.attr.fontPath).build());
+
         setContentView(R.layout.activity_favorites);
+
+        toolbar = (Toolbar)findViewById(R.id.toolbarFavorites);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Favoritos");
 
         rootLayout = (RelativeLayout)findViewById(R.id.root_layout);
 
